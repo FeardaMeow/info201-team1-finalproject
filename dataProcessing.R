@@ -25,7 +25,7 @@ data <- filter(data, !is.na(UGDS), !is.na(ADM_RATE), !is.na(SAT_AVG), !is.na(ACT
 
 #Univercity of Richmond is not a city
 data[1093,]$CITY <- "Richmond"
-api_key <- "&key=AIzaSyDgvbfHkHS_ilREobUC9zzesBtHWqZRT7Y"
+api_key <- "&key=insertkey"
 base_url <- "https://maps.googleapis.com/maps/api/geocode/json?address="
 lat <- rep(0,nrow(data))
 lng <- rep(0,nrow(data))
