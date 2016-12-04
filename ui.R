@@ -1,7 +1,6 @@
-
 library(shiny)
+library(leaflet)
 
-# Define UI for application that draws a histogram
 shinyUI(# Use a fluid Bootstrap layout
   fluidPage(    
     

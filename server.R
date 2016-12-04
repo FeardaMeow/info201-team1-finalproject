@@ -2,6 +2,9 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 library(rsconnect)
+library(leaflet)
+
+#Read in data and change some factors to character
 college.data <- read.csv("data/data.csv", header = TRUE)
 college.data$STABBR <- as.character(college.data$STABBR)
 college.data$INSTNM <- as.character(college.data$INSTNM)
@@ -53,7 +56,7 @@ shinyServer(function(input, output) {
   })
   
   output$mymap <- renderLeaflet({
-    leaflet(df) %>% addCircles(lng = ~lng, lat = ~lat)%>%
+    leaflet(college.data) %>% addCircles(lng = ~LONGITUDE, lat = ~LATITUDE)%>%
       addProviderTiles("Stamen.TonerLite",
                        options = providerTileOptions(noWrap = TRUE)
       ) 
