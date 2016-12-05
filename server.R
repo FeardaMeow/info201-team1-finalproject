@@ -58,7 +58,7 @@ shinyServer(function(input, output) {
   
   output$mymap <- renderLeaflet({
     df <- head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
-                           , college.data[,c(4,3,7,9,11,12,10,13,14,15,16,17)]), n =3)
+                           , college.data[,c(4,3,7,9,11,12,10,13,14,15,16,17,2)]), n =3)
     leaflet(df) %>% addMarkers(lng = ~LONGITUDE, lat = ~LATITUDE, popup = 
                                            paste0(df$INSTNM, "<br>", "Location: ", df$CITY, ",",df$STABBR , "<br>", "# of Undergrads: ", df$UGDS, "<br>", "Admission Rate: ", df$ADM_RATE ))%>%
       addProviderTiles("Stamen.TonerLite",
