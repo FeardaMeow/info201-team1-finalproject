@@ -15,7 +15,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
         #numericInput('ugds', 'Undergraduate Body Size', 1,
          #            min = 1, max = 100000),
         sliderInput("ugds", 'Undergraduate Body Size', min = 0, 
-                    max = 61470, value = c(0, 61470)),
+                    max = 61470, value = c(0, 61470), step = 10000),
         sliderInput('sat', 'SAT score',
                      min = 0, max = 1600, value = c(0, 1600)),
         sliderInput('act', 'ACT score',
