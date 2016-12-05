@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 
-shinyUI(# Use a fluid Bootstrap layout
+ui <- bootstrapPage(# Use a fluid Bootstrap layout
   fluidPage(    
     
     # Give the page a title
@@ -12,17 +12,20 @@ shinyUI(# Use a fluid Bootstrap layout
       
       # Define the sidebar with one input
       sidebarPanel(
-        numericInput('ugds', 'Undergraduate Body Size', 1,
-                     min = 1, max = 100000),
-        numericInput('sat', 'SAT score', 0,
-                     min = 400, max = 1600),
-        numericInput('act', 'ACT score', 0,
-                     min = 1, max = 36),
+        #numericInput('ugds', 'Undergraduate Body Size', 1,
+         #            min = 1, max = 100000),
+        sliderInput("ugds", 'Undergraduate Body Size', min = 0, 
+                    max = 61470, value = c(0, 61470)),
+        sliderInput('sat', 'SAT score',
+                     min = 0, max = 1600, value = c(0, 1600)),
+        sliderInput('act', 'ACT score',
+                     min = 1, max = 36, value = c(1, 36)),
         selectInput("degree.type", "Degree Type:", 
-                    choices=c("Two-year","Four-year")),
+                    choices = list("All" = 0, "Two-year" = 2,"Four-year" = 3),
+                    selected = 0),
         selectInput("publicOrPrivate", "Public or Private School", 
-                    choices = list("Public" = 1, "Private Non-Profit" = 2, "Pirvate For-Profit"), 
-                    selected = 1),
+                    choices = list("All" = 0, "Public" = 1, "Private Non-Profit" = 2, "Private For-Profit" = 3), 
+                    selected = 0),
         uiOutput("stateSelector"),
         actionButton("submitCollege", "Find Colleges"),
         helpText("Data from the famous (Fisher's or Anderson's) iris data set")
