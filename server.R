@@ -46,21 +46,21 @@ shinyServer(function(input, output, session) {
   })
   
   filteredData <- reactive({
-      if(input$publicOrPrivate == 0 & input$degree.type == 0) {
-        filter(college.data, UGDS >= input$ugds[1] & UGDS <= input$ugds[2],
-               SAT_AVG >= input$sat[1] & SAT_AVG <= input$sat[2], ACTCMMID >= input$act[1] & ACTCMMID <= input$act[2])
+      if(input$publicOrPrivate.map == 0 & input$degree.type.map == 0) {
+        filter(college.data, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
+               SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
       }
-      else if(input$publicOrPrivate != 0 & input$degree.type != 0) {
-        filter(college.data, CONTROL == input$publicOrPrivate, PREDDEG == input$degree.type, UGDS >= input$ugds[1] & UGDS <= input$ugds[2],
-               SAT_AVG >= input$sat[1] & SAT_AVG <= input$sat[2], ACTCMMID >= input$act[1] & ACTCMMID <= input$act[2])
+      else if(input$publicOrPrivate.map != 0 & input$degree.type.map != 0) {
+        filter(college.data, CONTROL == input$publicOrPrivate.map, PREDDEG == input$degree.type.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
+               SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
       }
-      else if(input$publicOrPrivate == 0) {
-        filter(college.data, PREDDEG == input$degree.type, UGDS >= input$ugds[1] & UGDS <= input$ugds[2],
-               SAT_AVG >= input$sat[1] & SAT_AVG <= input$sat[2], ACTCMMID >= input$act[1] & ACTCMMID <= input$act[2])
+      else if(input$publicOrPrivate.map == 0) {
+        filter(college.data, PREDDEG == input$degree.type.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
+               SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
       }
-      else if(input$degree.type == 0) {
-        filter(college.data, CONTROL == input$publicOrPrivate, UGDS >= input$ugds[1] & UGDS <= input$ugds[2],
-               SAT_AVG >= input$sat[1] & SAT_AVG <= input$sat[2], ACTCMMID >= input$act[1] & ACTCMMID <= input$act[2])
+      else if(input$degree.type.map == 0) {
+        filter(college.data, CONTROL == input$publicOrPrivate.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
+               SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
       }
     
       
@@ -91,12 +91,19 @@ shinyServer(function(input, output, session) {
       
   })
   observe({
-    leafletProxy("mymap", data = filteredData()) %>%
+    df <- filteredData();
+    leafletProxy("mymap", data = df) %>%
       clearShapes() %>% 
       clearMarkerClusters() %>%
       addMarkers(
         clusterOptions = markerClusterOptions(maxClusterRadius = 50),
-        popup = ~INSTNM
+        popup = paste0(df$INSTNM, "<br>", 
+                       "Location: ", df$CITY, ", ", df$STABBR, "<br>",
+                       "Undergrad Size: ", df$UGDS, "<br>", 
+                       "Admission Rate: ", df$ADM_RATE, "<br>",
+                       "Average ACT: ", df$ACTCMMID, "<br>", 
+                       "Average SAT: ", df$SAT_AVG, "<br>",
+                       "Website: <a href = '", df$INSTURL,"'>Click Here</a>")
       )
   })
 })

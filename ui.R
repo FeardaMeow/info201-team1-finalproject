@@ -47,21 +47,20 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
                  sidebarPanel(
                    #numericInput('ugds', 'Undergraduate Body Size', 1,
                    #            min = 1, max = 100000),
-                   sliderInput("ugds", 'Undergraduate Body Size', min = 0, 
+                   sliderInput("ugds.map", 'Undergraduate Body Size', min = 0, 
                                max = 61470, value = c(0, 61470), step = 10000),
-                   sliderInput('sat', 'SAT score',
+                   sliderInput('sat.map', 'SAT score',
                                min = 0, max = 1600, value = c(0, 1600)),
-                   sliderInput('act', 'ACT score',
+                   sliderInput('act.map', 'ACT score',
                                min = 1, max = 36, value = c(1, 36)),
-                   selectInput("degree.type", "Degree Type:", 
+                   selectInput("degree.type.map", "Degree Type:", 
                                choices = list("All" = 0, "Two-year" = 2,"Four-year" = 3),
                                selected = 0),
-                   selectInput("publicOrPrivate", "Public or Private School", 
+                   selectInput("publicOrPrivate.map", "Public or Private School", 
                                choices = list("All" = 0, "Public" = 1, "Private Non-Profit" = 2, "Private For-Profit" = 3), 
                                selected = 0),
-                   uiOutput("stateSelector"),
-                   actionButton("submitCollege", "Find Colleges"),
-                   helpText("Data from the famous (Fisher's or Anderson's) iris data set")
+                   uiOutput("stateSelectorMap"),
+                   helpText("Data from College Scorecard")
                  ),
                  
                  # Create a spot for the barplot
