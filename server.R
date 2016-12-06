@@ -6,9 +6,10 @@ library(leaflet)
 
 #Read in data and change some factors to character
 college.data <- read.csv("data/data.csv", header = TRUE)
-View(college.data)
 college.data$STABBR <- as.character(college.data$STABBR)
 college.data$INSTNM <- as.character(college.data$INSTNM)
+college.data$CITY <- as.character(college.data$CITY)
+college.data$INSTURL <- as.character(college.data$INSTURL)
 
 
 computeDist <- function(college, data) {
@@ -71,11 +72,10 @@ shinyServer(function(input, output, session) {
   #Input objects for UI
   observeEvent(input$submitCollege, {
     
-    
-    
     output$summary <- renderTable({
-      head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
-                       , college.data[,c(4,3,7,9,11,12,10,13,14,15)]), n =3)
+      #head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
+       #                , college.data[,c(4,3,7,9,11,12,10,13,14,15)]), n =3)
+      head(college.data, n=3)
     })
   })
   
