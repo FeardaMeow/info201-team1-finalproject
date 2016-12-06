@@ -17,6 +17,7 @@ computeDist <- function(college, data) {
   return(temp[order(temp$dist),c(-3,-17)])
 }
 
+returnCollegeData <- function(){return(college.data)}
 shinyServer(function(input, output, session) {
  
   #Reactive inputs
@@ -101,6 +102,8 @@ shinyServer(function(input, output, session) {
                        "Website: <a href = '", df$INSTURL,"'>Click Here</a>")
       )
   })
+  
+  output$dataTable <- renderDataTable(college.data)
 })
 
 
