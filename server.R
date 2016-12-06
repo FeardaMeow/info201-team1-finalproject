@@ -67,12 +67,7 @@ shinyServer(function(input, output, session) {
   })
   
   
-  
-  
-  
   #Input objects for UI
-
-  
   observeEvent(input$submitCollege, {
     
     
