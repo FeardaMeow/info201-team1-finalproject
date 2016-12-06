@@ -13,9 +13,19 @@ college.data$INSTURL <- as.character(college.data$INSTURL)
 
 
 computeDist <- function(college, data) {
+  #Filter to the correct state and degree type
   temp <- data[data[,2]==college[,1] & data[,3]==college[,2],]
+  #Compute distances from supplied input and all colleges
   temp$dist <- apply(temp[,4:6],1,function(x) sqrt(sum((x-college[,3:5])^2)))
-  return(temp[order(temp$dist),c(-3,-17)])
+  #Renaming columns
+  temp$"Institution Name" <- temp[,1]
+  temp$"Undergraduate Size" <- temp[,4]
+  temp$"Admission Rate" <- temp[,7]
+  temp$"Average SAT" <- temp[,5]
+  temp$"Median ACT" <- temp[,6]
+  temp$"In State Tuition" <- temp[,8]
+  temp$"Out of State Tuition" <- temp[,9]
+  return(temp[order(temp$dist),c((ncol(temp)-6):ncol(temp))])
 }
 
 returnCollegeData <- function(){return(college.data)}
@@ -73,9 +83,9 @@ shinyServer(function(input, output, session) {
   observeEvent(input$submitCollege, {
     
     output$summary <- renderTable({
-      #head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
-       #                , college.data[,c(4,3,7,9,11,12,10,13,14,15)]), n =3)
-      head(college.data, n=3)
+      head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
+                       , college.data[,c(4,3,7,9,11,12,10,13,14,15)]), n =3)
+      
     })
   })
   
