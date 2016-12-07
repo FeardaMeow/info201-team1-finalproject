@@ -64,6 +64,10 @@ shinyServer(function(input, output, session) {
   filteredData <- reactive({
       college.test <- college.data
       college.test <- college.test[grep(input$school, college.test$INSTNM, ignore.case = TRUE), ]
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
       if(input$publicOrPrivate.map == 0 & input$degree.type.map == 0) {
         if(nrow(college.test) == 1) {
           college.test
