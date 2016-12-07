@@ -4,8 +4,9 @@ library(ggplot2)
 library(rsconnect)
 library(leaflet)
 
+
 #Read in data and change some factors to character
-college.data <- read.csv("data/data.csv", header = TRUE)
+college.data <- read.csv("data/data.csv", header = TRUE, stringsAsFactors = FALSE)
 college.data$STABBR <- as.character(college.data$STABBR)
 college.data$INSTNM <- as.character(college.data$INSTNM)
 college.data$CITY <- as.character(college.data$CITY)
@@ -46,6 +47,10 @@ shinyServer(function(input, output, session) {
   stateInput <- eventReactive(input$submitCollege, {
     input$state
   })
+  search <- eventReactive(input$button, {
+    input$school
+  })
+  
   
   degreeInput <- eventReactive(input$submitCollege, {
     switch(input$degree.type,
@@ -57,23 +62,41 @@ shinyServer(function(input, output, session) {
   })
   
   filteredData <- reactive({
+      college.test <- college.data
+      college.test <- college.test[grep(input$school, college.test$INSTNM, ignore.case = TRUE), ]
       if(input$publicOrPrivate.map == 0 & input$degree.type.map == 0) {
+        if(nrow(college.test) == 1) {
+          college.test
+        } else {
         filter(college.data, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
                SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
+        }
       }
       else if(input$publicOrPrivate.map != 0 & input$degree.type.map != 0) {
+        if(nrow(college.test) == 1) {
+          college.test
+        } else {
         filter(college.data, CONTROL == input$publicOrPrivate.map, PREDDEG == input$degree.type.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
                SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
+        }
       }
       else if(input$publicOrPrivate.map == 0) {
+        if(nrow(college.test) == 1) {
+          college.test
+        } else {
         filter(college.data, PREDDEG == input$degree.type.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
                SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
+        }
       }
       else if(input$degree.type.map == 0) {
+        if(nrow(college.test) == 1) {
+          college.test
+        } else {
         filter(college.data, CONTROL == input$publicOrPrivate.map, UGDS >= input$ugds.map[1] & UGDS <= input$ugds.map[2],
                SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
+        }
       }
-    
+      
       
   })
   
