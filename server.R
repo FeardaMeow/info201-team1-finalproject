@@ -4,7 +4,6 @@ library(ggplot2)
 library(rsconnect)
 library(leaflet)
 
-
 #Read in data and change some factors to character
 college.data <- read.csv("data/data.csv", header = TRUE, stringsAsFactors = FALSE)
 #Changes from factor to character
@@ -30,7 +29,6 @@ college.data <- mutate(college.data, group = cut(UGDS, breaks = c(0, top250.UGDS
 colorIcons <- iconList(blue = makeIcon('http://www.clker.com/cliparts/H/Z/S/J/9/N/map-marker-hi.png',iconWidth = 20, iconHeight =32),
                        red = makeIcon('http://www.clker.com/cliparts/e/3/F/I/0/A/google-maps-marker-for-residencelamontagne-hi.png', iconWidth = 20, iconHeight = 32),
                        green = makeIcon('http://www.clker.com/cliparts/F/w/l/C/e/W/map-marker-md.png', iconWidth = 20, iconHeight = 32))
-
 
 computeDist <- function(college, data) {
   #Filter to the correct state and degree type, checks for USA flag
@@ -119,7 +117,9 @@ shinyServer(function(input, output, session) {
       college.test <- college.test[grep(input$school, college.test$INSTNM, ignore.case = TRUE), ]
       
       # This series of if statements displays accurate information no matter what inputs are selected in what ever order
-      # the user wants them to be in. Had to do it this way because 
+      # the user wants them to be in. Had to do it this way because if the inputs All are selected on the map for either
+      # option, it will look for CONTROL == 0 or PREDDEP == 0, which don't exist and the map will display nothing. So
+      # these if statements check for 0's and display the dataframe accordingly.
       
       # Filters the map if publicOrPrivate and degree.type have not been changed
       if(input$publicOrPrivate.map == 0 & input$degree.type.map == 0) {
@@ -160,10 +160,7 @@ shinyServer(function(input, output, session) {
                SAT_AVG >= input$sat.map[1] & SAT_AVG <= input$sat.map[2], ACTCMMID >= input$act.map[1] & ACTCMMID <= input$act.map[2])
         }
       }
-      
-      
   })
-  
   
   #Input objects for UI
   #First tab, similar colleges
@@ -181,11 +178,13 @@ shinyServer(function(input, output, session) {
       }
     })
   })
-  
+  # Initial map is rendered here
   output$mymap <- renderLeaflet({
     leaflet(college.data) %>% addTiles() %>%
       addMarkers(
+        # color for markers
         icon = ~colorIcons[group],
+        # Cluster grouping for the markers
         clusterOptions = markerClusterOptions(maxClusterRadius = 55),
         popup = paste0(college.data$INSTNM, "<br>", 
                  "Location: ", college.data$CITY, ", ", college.data$STABBR, "<br>",
@@ -194,12 +193,13 @@ shinyServer(function(input, output, session) {
                  "Average ACT: ", sprintf('%.2f', college.data$ACTCMMID), "<br>", 
                  "Average SAT: ", sprintf('%.2f', college.data$SAT_AVG), "<br>",
                  "Website: <a target='_blank' href = 'http://", college.data$INSTURL,"'>Click Here</a>"))
-    
-      
   })
+  
+  # This is where parts of the map are rerendered depending on user input
   observe({
     df <- filteredData();
     leafletProxy("mymap", data = df) %>%
+      # these two clear statements clear the map and then re draw the correct points after
       clearShapes() %>% 
       clearMarkerClusters() %>%
       addMarkers(

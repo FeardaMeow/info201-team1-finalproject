@@ -13,8 +13,6 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
               column(10,includeMarkdown("data/overview.md")),
               column(1)
             )
-                    
-                
     ),
     #Tab panel for table output
     tabPanel("Table",    
@@ -24,8 +22,6 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
           # Define the sidebar with one input
           sidebarPanel(
             
-            #numericInput('ugds', 'Undergraduate Body Size', 1,
-            #            min = 1, max = 100000),
             sliderInput("ugds", 'Undergraduate Body Size', min = 0, 
                         max = 61470, value = 30000, step = 100),
             sliderInput('sat', 'SAT score',
@@ -47,8 +43,6 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
             tableOutput("summary")
           )
         )
-  
- 
     ),
     tabPanel("Map",
        # Generate a row with a sidebar
