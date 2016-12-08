@@ -24,15 +24,15 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
                           choices = list("Two-year","Four-year"),
                           selected = 0),
               uiOutput("stateSelector"),
+              sliderInput('num.colleges', 'Number of Colleges to Display',
+                          min = 1, max = 10, value = 3, step=1),
               actionButton("submitCollege", "Find Colleges"),
-              helpText("Outputs colleges that fit your input criteria")
+              helpText("Outputs colleges that are most similar to your input paramters. The colleges will be listed in descending order from most to least similar.")
             ),
             
             # Create a spot for the barplot
             mainPanel(
-              #verbatimTextOutput("summary"),
               tableOutput("summary")
-              
             )
           )
     

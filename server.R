@@ -7,6 +7,7 @@ library(leaflet)
 
 #Read in data and change some factors to character
 college.data <- read.csv("data/data.csv", header = TRUE, stringsAsFactors = FALSE)
+#Changes from factor to character
 college.data$STABBR <- as.character(college.data$STABBR)
 college.data$INSTNM <- as.character(college.data$INSTNM)
 college.data$CITY <- as.character(college.data$CITY)
@@ -27,19 +28,23 @@ colorIcons <- iconList(blue = makeIcon('C:/Users/Soda/Pictures/blue.png',iconWid
 # ----- This is where the markers get created -----
 
 computeDist <- function(college, data) {
-  #Filter to the correct state and degree type
-  temp <- data[data[,2]==college[,1] & data[,3]==college[,2],]
+  #Filter to the correct state and degree type, checks for USA flag
+  if (college[,1]=="USA") { temp <- data[data[,3]==college[,2],] }
+  else { temp <- data[data[,2]==college[,1] & data[,3]==college[,2],] }
+  
   #Compute distances from supplied input and all colleges
   temp$dist <- apply(temp[,4:6],1,function(x) sqrt(sum((x-college[,3:5])^2)))
+  
   #Renaming columns
   temp$"Institution Name" <- temp[,1]
-  temp$"Undergraduate Size" <- temp[,4]
-  temp$"Admission Rate" <- temp[,7]
   temp$"Average SAT" <- temp[,5]
   temp$"Median ACT" <- temp[,6]
+  temp$"Undergraduate Size" <- temp[,4]
+  temp$"Admission Rate" <- temp[,7]
   temp$"In State Tuition" <- temp[,8]
   temp$"Out of State Tuition" <- temp[,9]
-  return(temp[order(temp$dist),c((ncol(temp)-6):ncol(temp))])
+  temp$"4 Year Employment Rate" <- temp[,10]
+  return(temp[order(temp$dist),c((ncol(temp)-7):ncol(temp))])
 }
 
 returnCollegeData <- function(){return(college.data)}
@@ -62,13 +67,17 @@ shinyServer(function(input, output, session) {
     input$state
   })
   
+  numcollegesInput <- eventReactive(input$submitCollege, {
+    input$num.colleges
+  })
+  
   degreeInput <- eventReactive(input$submitCollege, {
     switch(input$degree.type,
            "Two-year" = 2,
            "Four-year" = 3)
   })
   output$stateSelector <- renderUI({
-    selectInput("state", "Choose State (required):", as.list(sort(unique(college.data$STABBR)))) 
+    selectInput("state", "Choose State (required):", c(as.list(sort(unique(college.data$STABBR))),"USA")) 
   })
   
   filteredData <- reactive({
@@ -113,16 +122,21 @@ shinyServer(function(input, output, session) {
   
   
   #Input objects for UI
+  #First tab, similar colleges
   observeEvent(input$submitCollege, {
     
     output$summary <- renderTable({
-      head(computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
-                       , college.data[,c(4,3,7,9,11,12,10,13,14,15)]), n =3)
-      
+      college.similar <- computeDist(data.frame(STABBR = stateInput(), PREDDEG = degreeInput(), UGDS = ugdsInput(), SAT_AVG = satInput(), ACTCMMID = actInput())
+                                     , college.data[,c(4,3,7,9,11,12,10,13,14,15)])
+      #Checks to see if there were any values found, if not let the user know
+      if (nrow(college.similar) >= 1) {
+        head(college.similar, n = numcollegesInput())
+      }
+      else {
+        print("No results found")
+      }
     })
   })
-  
- 
   
   output$mymap <- renderLeaflet({
     leaflet(college.data) %>% addTiles() 
