@@ -136,7 +136,7 @@ shinyServer(function(input, output, session) {
       clearMarkerClusters() %>%
       addMarkers(
         #uncomment line below to get it working
-        icon = ~colorIcons[group],
+        #icon = ~colorIcons[group],
         clusterOptions = markerClusterOptions(maxClusterRadius = 55),
         popup = paste0(df$INSTNM, "<br>", 
                        "Location: ", df$CITY, ", ", df$STABBR, "<br>",
@@ -144,7 +144,7 @@ shinyServer(function(input, output, session) {
                        "Admission Rate: ", sprintf('%.2f', df$ADM_RATE), "<br>",
                        "Average ACT: ", sprintf('%.2f', df$ACTCMMID), "<br>", 
                        "Average SAT: ", sprintf('%.2f', df$SAT_AVG), "<br>",
-                       "Website: <a href = '", df$INSTURL,"'>Click Here</a>")
+                       "Website: <a href = 'http://", df$INSTURL,"'>Click Here</a>")
       )
   })
   

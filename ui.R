@@ -4,7 +4,18 @@ library(shinydashboard)
 
 ui <- bootstrapPage(# Use a fluid Bootstrap layout
   navbarPage("US College Scorecard 2014-2015",
-      #Tab panel for table output
+             #Tab panel for overview
+             tabPanel("Overview",    
+                      # Generate a row with a sidebar
+                      fluidRow(
+                        column(1),
+                        column(10,includeMarkdown("data/overview.md")),
+                        column(1)
+                      )
+                      
+                  
+             ),
+             #Tab panel for table output
       tabPanel("Table",    
           # Generate a row with a sidebar
           sidebarLayout(      
@@ -73,24 +84,8 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
        ),
       tabPanel("Complete College List",
            # Generate a row with a sidebar
-           sidebarLayout(
-
-             # Define the sidebar with one input
-             sidebarPanel(
-               #numericInput('ugds', 'Undergraduate Body Size', 1,
-               #            min = 1, max = 100000),
-
-               
-               helpText("Data from College Scorecard")
-             ),
-
-             # Create a spot for the barplot
-             mainPanel(
-               #verbatimTextOutput("summary"),
-               dataTableOutput('dataTable')
-
-             )
-           )
+               column(12, dataTableOutput('dataTable'))
+      
 
       )
   )
