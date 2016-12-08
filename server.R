@@ -12,6 +12,7 @@ college.data$STABBR <- as.character(college.data$STABBR)
 college.data$INSTNM <- as.character(college.data$INSTNM)
 college.data$CITY <- as.character(college.data$CITY)
 college.data$INSTURL <- as.character(college.data$INSTURL)
+View(college.data)
 # ----- This is where the markers get created -----
 
 # This adds a column that seperates the data by specific breakpoints, I figured schools that are in the top
@@ -49,7 +50,24 @@ computeDist <- function(college, data) {
   return(temp[order(temp$dist),c((ncol(temp)-7):ncol(temp))])
 }
 
-returnCollegeData <- function(){return(college.data)}
+returnRenamedData <- function(){
+  temp <- select(college.data, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15)
+                              #1  2  3  4  5   6   7   8   9   10  11
+  #Renaming columns
+  temp$"City" <- temp[,1]
+  temp$"State" <- temp[,2]
+  temp$"Institution Name" <- temp[,3]
+  temp$"Website URL" <- temp[,4]
+  temp$"Average SAT" <- temp[,7]
+  temp$"Median ACT" <- temp[,8]
+  temp$"Undergraduate Size" <- temp[,5]
+  temp$"Admission Rate" <- temp[,6]
+  temp$"In State Tuition" <- temp[,9]
+  temp$"Out of State Tuition" <- temp[,10]
+  temp$"4 Year Employment Rate" <- temp[,11]
+  
+  return(temp[,12:22])
+}
 shinyServer(function(input, output, session) {
  
   #Reactive inputs
@@ -160,11 +178,13 @@ shinyServer(function(input, output, session) {
                        "Admission Rate: ", sprintf('%.2f', df$ADM_RATE), "<br>",
                        "Average ACT: ", sprintf('%.2f', df$ACTCMMID), "<br>", 
                        "Average SAT: ", sprintf('%.2f', df$SAT_AVG), "<br>",
-                       "Website: <a href = 'http://", df$INSTURL,"'>Click Here</a>")
+                       "Website: <a target='_blank' href = 'http://", df$INSTURL,"'>Click Here</a>")
       )
   })
   
-  output$dataTable <- renderDataTable(college.data)
+  output$dataTable <- renderDataTable(returnRenamedData())
 })
+
+
 
 

@@ -7,7 +7,7 @@ Making the decision to go to college is one of the best things you can do for yo
 
 Where is this data from?
 --------------------------------------
-The data comes from the College Scorecard, a data set of statistics compiled of accredited universities around the United States. This data is collected by the U.S. Department of Education and is available to everyone online. Around 2,700 schools are apart our visualizations just waiting to be discovered by future students. 
+The data comes from the College Scorecard, a data set of statistics compiled of accredited universities around the United States. This data is collected by the U.S. Department of Education and is available to everyone online. Around 2,850 schools are apart of our visualizations just waiting to be discovered by future students. 
 	
 Where do I start?
 --------------------------------------
