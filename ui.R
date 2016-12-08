@@ -55,6 +55,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
        sidebarLayout(      
          
          sidebarPanel(
+           htmlOutput("helptext"),
            textInput("school", label = '',value = "School Name..."),
            #numericInput('ugds', 'Undergraduate Body Size', 1,
            #            min = 1, max = 100000),
