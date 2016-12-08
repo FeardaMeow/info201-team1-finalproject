@@ -68,7 +68,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
            )
          )
        ),
-      tabPanel("Data Frame Table",
+      tabPanel("Complete College List",
            # Generate a row with a sidebar
            sidebarLayout(
 
