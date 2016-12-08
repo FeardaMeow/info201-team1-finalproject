@@ -19,7 +19,7 @@ college.data$INSTURL <- as.character(college.data$INSTURL)
 college.data <- mutate(college.data, group = cut(C150_4, breaks = c(0, .8636, Inf), labels = c("blue", "red")))
 
 # these are the files that get used to render markers, they just need to look better.
-colorIcons <- iconList(blue = makeIcon('C:/Users/Soda/cvzxcvzxcvPictures/blue.png',iconWidth = 24, iconHeight =32),
+colorIcons <- iconList(blue = makeIcon('C:/Users/Soda/Pictures/blue.png',iconWidth = 24, iconHeight =32),
                        red = makeIcon('C:/Users/Soda/Pictures/red.png', iconWidth = 24, iconHeight = 32))
 
 #you must also uncomment line in observe() by addMarkers to get the custom markers to render
