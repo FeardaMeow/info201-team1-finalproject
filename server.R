@@ -136,7 +136,7 @@ shinyServer(function(input, output, session) {
       clearMarkerClusters() %>%
       addMarkers(
         #uncomment line below to get it working
-        icon = ~colorIcons[group],
+        #icon = ~colorIcons[group],
         clusterOptions = markerClusterOptions(maxClusterRadius = 55),
         popup = paste0(df$INSTNM, "<br>", 
                        "Location: ", df$CITY, ", ", df$STABBR, "<br>",
