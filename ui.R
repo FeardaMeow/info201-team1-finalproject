@@ -1,5 +1,6 @@
 library(shiny)
 library(leaflet)
+library(shinydashboard)
 
 ui <- bootstrapPage(# Use a fluid Bootstrap layout
   navbarPage("US College Scorecard 2014-2015",
@@ -10,6 +11,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
             
             # Define the sidebar with one input
             sidebarPanel(
+              
               #numericInput('ugds', 'Undergraduate Body Size', 1,
               #            min = 1, max = 100000),
               sliderInput("ugds", 'Undergraduate Body Size', min = 0, 
@@ -88,6 +90,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
 
              )
            )
+
       )
   )
 )
