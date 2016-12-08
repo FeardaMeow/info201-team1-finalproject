@@ -44,6 +44,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
            
            # Define the sidebar with one input
            sidebarPanel(
+             textInput("school", label = '',value = "School Name..."),
              #numericInput('ugds', 'Undergraduate Body Size', 1,
              #            min = 1, max = 100000),
              sliderInput("ugds.map", 'Undergraduate Body Size', min = 0, 
