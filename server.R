@@ -1,3 +1,5 @@
+#Team-1 Steven Hwang, John Soter, and Andrew Bayles
+
 library(shiny)
 library(dplyr)
 library(ggplot2)
@@ -50,6 +52,7 @@ computeDist <- function(college, data) {
   return(temp[order(temp$dist),c((ncol(temp)-7):ncol(temp))])
 }
 
+#Returns cleaned data and renamed columns to the full data table
 returnRenamedData <- function(){
   temp <- select(college.data, 2, 3, 4, 6, 9, 10, 11, 12, 13, 14, 15)
                               #1  2  3  4  5   6   7   8   9   10  11
@@ -68,6 +71,7 @@ returnRenamedData <- function(){
   
   return(temp[,12:22])
 }
+
 shinyServer(function(input, output, session) {
  
   #Reactive inputs
@@ -215,6 +219,7 @@ shinyServer(function(input, output, session) {
       )
   })
   
+  #Simply outputs a data table with the full data set
   output$dataTable <- renderDataTable(returnRenamedData())
 })
 

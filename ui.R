@@ -1,4 +1,4 @@
-
+#Team-1 Steven Hwang, John Soter, and Andrew Bayles
 library(shiny)
 library(leaflet)
 library(shinydashboard)
@@ -78,7 +78,7 @@ ui <- bootstrapPage(# Use a fluid Bootstrap layout
      ),
    #Tab panel for the data table with full access to the data set
     tabPanel("Complete College List",
-         # Generate a data table with
+         # Generate a data table with full data set
              column(12, dataTableOutput('dataTable'))
     )
   )
